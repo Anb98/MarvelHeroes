@@ -4,18 +4,22 @@ import {
 	Switch,
 	Route,
 } from 'react-router-dom';
+import Layout from '@layout/Main';
 
-import Characters from '@pages/Characters';
 import Comics from '@pages/Comics';
 import Stories from '@pages/Stories';
+import Characters from '@pages/Characters';
+
 
 const App = () => (
 	<Router>
-		<Switch>
-			<Route path='/characters' component={Characters} />
-			<Route path='/comics' component={Comics} />
-			<Route path='/stories' component={Stories} />
-		</Switch>
+		<Layout>
+			<Switch>
+				<Route path='/characters' component={Characters} />
+				<Route path='/comics' component={Comics} />
+				<Route path='/stories' component={Stories} />
+			</Switch>
+		</Layout>
 	</Router>
 );
 

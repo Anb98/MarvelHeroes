@@ -1,17 +1,26 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { menu } from '@config/general';
+
 import Navbar from './components/Navbar';
 
-const Main = ({ title, children }) => {
+const Main = ({ children }) => {
+	const [actualPath, setActualPath] = useState('/');
+	const location = useLocation();
+
 	useEffect(() => {
-		document.title = title;
-	}, []);
+		const actualPage = menu.find((el) => el.path === location.pathname);
+		setActualPath(actualPage.path);
+		document.title = `Marvel - ${actualPage.text}`;
+	}, [location]);
+
 
 	return (
 		<Body>
-			<Navbar />
+			<Navbar actualPath={actualPath} />
 			<div className='main-container'>
 				{children}
 			</div>
@@ -20,7 +29,6 @@ const Main = ({ title, children }) => {
 };
 
 Main.propTypes = {
-	title: PropTypes.string.isRequired,
 	children: PropTypes.node.isRequired,
 };
 

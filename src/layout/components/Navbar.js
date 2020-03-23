@@ -1,61 +1,51 @@
-import React, { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-const Navbar = () => {
-	const location = useLocation();
+import { menu } from '@config/general';
 
-	const menu = [
-		{
-			key: 1,
-			icon: '/icon/character.svg',
-			path: '/characters',
-			text: 'Characters',
-		},
-		{
-			key: 2,
-			icon: '/icon/comic.svg',
-			path: '/comics',
-			text: 'Comics',
-		},
-		{
-			key: 3,
-			icon: '/icon/story.svg',
-			path: '/stories',
-			text: 'Stories',
-		},
-	];
+const Navbar = ({ actualPath }) => (
 
-	useEffect(() => {
-		console.log('location :', location);
-	}, [location]);
+	<Wrapper>
+		<ul className='navbar'>
 
-	return (
+			<li className='navbar__header'>
+				<img className='navbar__logo' src='/img/logo.svg' alt='logout' />
+			</li>
 
-		<Wrapper>
-			<ul className='navbar'>
+			{
+				menu.map((item) => (
+					<li
+						className={[
+							'navbar__item',
+							actualPath === item.path && 'navbar__item--selected',
+						].filter(Boolean).join(' ')}
+						key={item.key}
+					>
+						<Link to={item.path} className='navbar__link'>
+							<img className='navbar__icon' src={item.icon} alt={item.text} />
+							<span className='navbar__text'>{item.text}</span>
+						</Link>
+					</li>
+				))
+			}
 
-				<li className='navbar__header'>
-					<img className='navbar__logo' src='/img/logo.svg' alt='logout' />
-				</li>
+			<li className='navbar__footer'>
+				<a
+					className='navbar__link navbar__text--footer'
+					target='__blank'
+					href='http://marvel.com'
+				>
+					Data provided by Marvel. © 2020 MARVEL
+				</a>
+			</li>
+		</ul>
+	</Wrapper>
+);
 
-				{
-					menu.map((item) => (
-						<li className={['navbar__item', location.pathname === item.path && 'navbar__item--selected'].filter(Boolean).join(' ')} key={item.key}>
-							<Link to={item.path} className='navbar__link'>
-								<img className='navbar__icon' src={item.icon} alt={item.text} />
-								<span className='navbar__text'>{item.text}</span>
-							</Link>
-						</li>
-					))
-				}
-
-				<li className='navbar__footer'>
-					<a className='navbar__link navbar__text--footer' target='__blank' href='http://marvel.com'>Data provided by Marvel. © 2020 MARVEL</a>
-				</li>
-			</ul>
-		</Wrapper>
-	);
+Navbar.propTypes = {
+	actualPath: PropTypes.string.isRequired,
 };
 
 const Wrapper = styled.nav`
@@ -97,7 +87,12 @@ border-top-right-radius: 40px;
 			margin-left: 1.5em;
 			background: var(--secondary-color);
 			* {
-				filter: invert(69%) sepia(39%) saturate(901%) hue-rotate(32deg) brightness(104%) contrast(97%) !important;
+				filter: invert(69%) 
+					sepia(39%)
+					saturate(901%)
+					hue-rotate(32deg)
+					brightness(104%)
+					contrast(97%) !important;
 			}
 
 
@@ -126,7 +121,12 @@ border-top-right-radius: 40px;
 	&__icon {
 		width:1.75em;
 		margin: 0 1.5rem;
-		filter: invert(34%) sepia(4%) saturate(2442%) hue-rotate(206deg) brightness(91%) contrast(88%);
+		filter: invert(34%)
+			sepia(4%) 
+			saturate(2442%) 
+			hue-rotate(206deg) 
+			brightness(91%) 
+			contrast(88%);
 	}
 	
 	&__text {

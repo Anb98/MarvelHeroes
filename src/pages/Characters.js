@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Layout from '@layout/Main';
+
 
 import useDataApi from '@hooks/useDataApi';
 import { makeUrl } from '@config/util';
@@ -32,17 +32,15 @@ const Characters = () => {
 
 
 	return (
-		<Layout title='Characters'>
+		<div className='App'>
 			Characters
-			<div className='App'>
-				<Pagination
-					onChange={onChange}
-					onShowSizeChange={onChange}
-					total={50}
-					showSizeChanger
-				/>
-			</div>
-		</Layout>
+			<Pagination
+				onChange={onChange}
+				onShowSizeChange={onChange}
+				total={50}
+				showSizeChanger
+			/>
+		</div>
 	);
 };
 
