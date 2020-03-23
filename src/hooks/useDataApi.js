@@ -68,7 +68,7 @@ const useDataApi = (url, headers = null) => {
 	 * @param {any} [body] - Cuerpo de la peticion
 	 * @param {string} [method="get"] - tipo de metodo
 	 */
-	const fetchData = async (body = null, method = 'get') => {
+	const fetchData = async ({ body = null, method = 'get', params = undefined } = {}) => {
 		dispatch({ type: 'FETCH_INIT' });
 
 		if (state.isLoading) return;
@@ -79,6 +79,7 @@ const useDataApi = (url, headers = null) => {
 				url,
 				headers,
 				data: body,
+				params,
 			});
 
 			const { data, status } = result;

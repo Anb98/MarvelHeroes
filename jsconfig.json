@@ -5,6 +5,7 @@
 			"@root/*"      : ["*"],
 			"@hooks/*"     : ["hooks/*"],
 			"@layout/*"    : ["layout/*"],
+			"@pages/*"    : ["pages/*"],
 			"@components/*": ["components/*"],
 			"@config/*"   : ["config/*"]
 		}

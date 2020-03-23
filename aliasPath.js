@@ -4,4 +4,5 @@ module.exports = {
 	'@config': './src/config/',
 	'@hooks': './src/hooks',
 	'@layout': './src/layout',
+	'@pages': './src/pages',
 };

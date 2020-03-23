@@ -1,23 +1,22 @@
-import React, { useEffect } from 'react';
-import './App.css';
-import { makeUrl } from '@config/util';
-import axios from 'axios';
+import React from 'react';
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route,
+} from 'react-router-dom';
 
-function App() {
-	const getCharacter = async () => {
-		// const {data} = await axios(makeUrl('characters'));
-		// console.log('response.data.results :', data.data.results);
-	};
+import Characters from '@pages/Characters';
+import Comics from '@pages/Comics';
+import Stories from '@pages/Stories';
 
-	useEffect(() => {
-		getCharacter();
-	}, []);
-
-	return (
-		<div className='App'>
-			xd
-		</div>
-	);
-}
+const App = () => (
+	<Router>
+		<Switch>
+			<Route path='/characters' component={Characters} />
+			<Route path='/comics' component={Comics} />
+			<Route path='/stories' component={Stories} />
+		</Switch>
+	</Router>
+);
 
 export default App;

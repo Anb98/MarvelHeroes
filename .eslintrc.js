@@ -36,7 +36,7 @@ module.exports = (()=>({
 		"react/jsx-indent-props": ["error", "tab"],
 		"quotes": ["error", "single", { "allowTemplateLiterals": true }],
 		"jsx-quotes":["error", "prefer-single"],
-		"react/jsx-filename-extension":[1, {"extensions":[".js", ".jsx"]}]
+		"react/jsx-filename-extension":[1, {"extensions":[".js", ".jsx"]}],
 	},
 	"settings": {
 		"import/resolver": {

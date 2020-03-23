@@ -5,6 +5,12 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --nav-width:12rem;
+  --main-color:#1F1C3B;
+  --secondary-color:#3D3159;
+
+  background: var(--secondary-color) !important;
 }
 
 code {
@@ -13,3 +19,4 @@ code {
 }
 
 @import '~antd/dist/antd.css';
+
