@@ -6,12 +6,18 @@ import { Table } from 'antd';
 
 const StyledTable = ({
 	title, dataSource, columns, loading,
+	pagination,
 }) => (
 	<Wrapper>
 		<header>
 			{title}
 		</header>
-		<Table dataSource={dataSource} columns={columns} loading={loading} />
+		<Table
+			dataSource={dataSource}
+			columns={columns}
+			loading={loading}
+			pagination={pagination}
+		/>
 	</Wrapper>
 );
 
@@ -27,22 +33,16 @@ StyledTable.propTypes = {
 };
 
 const Wrapper = styled.div`
-background: white;
+--bg-color:#4E416D;
+--text-color: #afbed3;
+background: var(--bg-color);
 border-radius: 13px;
 
 header {
 	padding: 1.25em 0 0.5em 2em;
-	color:#afbed3;
+	color: var(--text-color);
 }
 
-
-table{
-	color:black;
-
-	& > * {
-		background: white !important;
-	} 
-}
 
 .ant-pagination.ant-table-pagination {
 	width:100%;
@@ -54,34 +54,56 @@ table{
 		padding-left:2em !important;
 	}
 
+	th, td {
+		color: var(--text-color);
+	}
+
 	tbody>tr>td, th {
 		border:initial;
-		background:white;
+		background:var(--bg-color);
 	} 
 
-	tbody>tr:hover td:first-child{
-		position:relative;
-		&::before {
-			--size:8px;
-			content:'';
-			position:absolute;
-			top: var(--size);
-			bottom: var(--size);
-			left:0px;
-			width:3px;
-			background:var(--main-color);
-			border-radius: 0px 4px 4px 0px;
-			
+	tbody>tr:hover {
+		td, th {
+			background: #3E325A !important;
+		}
+
+		td:first-child{
+			position:relative;
+			&::before {
+				--size:8px;
+				content:'';
+				position:absolute;
+				top: var(--size);
+				bottom: var(--size);
+				left:0px;
+				width:3px;
+				background:var(--main-color);
+				border-radius: 0px 4px 4px 0px;
+				
+			}
 		}
 	}
 }
 
 .ant-pagination-item-link{
 	border: 0;
+	background:#4E416D;
 }
 
 .ant-pagination-item {
-	border-radius:5px;
+	opacity:0.6;
+	border:0;
+	border-radius:50%;
+	background: #282449 !important;
+
+	a {
+		color: var(--text-color) !important;
+	}
+}
+
+.ant-pagination-item-active{
+	opacity:1 !important;
 }
 
 `;
