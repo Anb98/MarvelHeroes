@@ -9,3 +9,10 @@ export const makeUrl = (path) => {
 
 	return str;
 };
+
+export const toPascalCase = (text) => {
+	const arrText = text.split('_');
+
+	const str = arrText.map((el) => el.charAt(0).toUpperCase() + el.slice(1)).join('');
+	return str;
+};

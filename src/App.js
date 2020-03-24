@@ -10,15 +10,19 @@ import Comics from '@pages/Comics';
 import Stories from '@pages/Stories';
 import Characters from '@pages/Characters';
 
+import { CharactersProvider } from '@contexts/CharactersContext';
+
 
 const App = () => (
 	<Router>
 		<Layout>
-			<Switch>
-				<Route path='/characters' component={Characters} />
-				<Route path='/comics' component={Comics} />
-				<Route path='/stories' component={Stories} />
-			</Switch>
+			<CharactersProvider>
+				<Switch>
+					<Route path='/characters' component={Characters} />
+					<Route path='/comics' component={Comics} />
+					<Route path='/stories' component={Stories} />
+				</Switch>
+			</CharactersProvider>
 		</Layout>
 	</Router>
 );

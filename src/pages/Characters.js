@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+	useEffect,
+	useContext,
+} from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { message } from 'antd';
 
+import { CharactersContext } from '@contexts/CharactersContext';
 import StyledTable from '@components/StyledTable';
-import useDataApi from '@hooks/useDataApi';
-import { makeUrl } from '@config/util';
 
 const Characters = () => {
-	const [characterState, fetchData] = useDataApi(makeUrl('characters'));
-	const [dataTable, setDataTable] = useState({
-		rows: [],
-		total: 0,
-	});
+	const { favorites, state, actions: { search } } = useContext(CharactersContext);
 
 	const columns = [
 		{
@@ -41,48 +38,26 @@ const Characters = () => {
 		},
 	];
 
-	const onChange = (page, pageSize) => {
-		const offset = (page - 1) * pageSize;
-		fetchData({
-			params: {
-				offset,
-				limit: pageSize,
-			},
-		});
+	const onChange = (page) => {
+		search({ page });
 	};
 
 
 	useEffect(() => {
-		onChange(1, 10);
+		onChange(1);
 	}, []);
-
-	useEffect(() => {
-		if (characterState.isSuccess) {
-			const response = characterState.data;
-
-			setDataTable({
-				rows: response?.data?.results || [],
-				total: response?.data?.total || 0,
-			});
-		}
-
-		if (characterState.isError) {
-			message.error('Oops! Something happened...');
-			console.log('Error :', characterState.error);
-		}
-	}, [characterState.isSuccess]);
 
 
 	return (
 		<div>
 			<StyledTable
-				loading={characterState.isLoading}
+				loading={state.isLoading}
 				title='characters'
-				dataSource={dataTable.rows}
+				dataSource={state.result.rows}
 				columns={columns}
 				pagination={{
 					onChange,
-					total: dataTable.total,
+					total: state.result.total,
 					pageSize: 10,
 				}}
 			/>

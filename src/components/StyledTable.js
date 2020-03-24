@@ -5,7 +5,10 @@ import styled from 'styled-components';
 import { Table } from 'antd';
 
 const StyledTable = ({
-	title, dataSource, columns, loading,
+	title,
+	dataSource,
+	columns,
+	loading,
 	pagination,
 }) => (
 	<Wrapper>
@@ -30,6 +33,7 @@ StyledTable.propTypes = {
 	dataSource: PropTypes.arrayOf(PropTypes.object).isRequired,
 	columns: PropTypes.arrayOf(PropTypes.object).isRequired,
 	loading: PropTypes.bool,
+	pagination: PropTypes.object,
 };
 
 const Wrapper = styled.div`
