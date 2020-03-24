@@ -17,7 +17,6 @@ const Characters = () => {
 	const columns = [
 		{
 			title: 'Name',
-			width: 250,
 			dataIndex: 'name',
 			render: (text, record) => (
 				<FirstColumn
@@ -32,7 +31,13 @@ const Characters = () => {
 		{
 			title: 'Description',
 			dataIndex: 'description',
-			render: (text) => text || 'No description 😢',
+			render: (text) => {
+				if (!text) return 'No description 😢';
+
+				if (text.length > 130) return `${text.substring(0, 130)}...`;
+
+				return text;
+			},
 		},
 	];
 
@@ -54,7 +59,6 @@ const Characters = () => {
 	useEffect(() => {
 		if (characterState.isSuccess) {
 			const response = characterState.data;
-			console.log('Characters -> characterState.data', characterState.data);
 
 			setDataTable({
 				rows: response?.data?.results || [],
@@ -91,10 +95,10 @@ const FirstColumn = styled(Link)`
 	cursor:pointer;
 	align-items:center;
 
+	--picture-size: 35px;
 	.first-column__picture {
-		--size: 35px;
-		width:var(--size);
-		height:var(--size);
+		width:var(--picture-size);
+		height:var(--picture-size);
 		background: url(${({ url }) => url}) no-repeat !important;
 		border-radius:50%;
 		border:2px solid #ffce07;
@@ -105,6 +109,7 @@ const FirstColumn = styled(Link)`
 	.first-column__text {
 		word-wrap: break-word;
 		font-weight:bold;
+		width: calc( 100% - (var(--picture-size) + 2px + 1em ));
 	}
 `;
 
