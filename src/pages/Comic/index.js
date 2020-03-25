@@ -10,7 +10,7 @@ import { makeUrl } from '@config/util';
 
 
 const Comics = () => {
-	const [comicState, fetchData] = useDataApi(makeUrl('comics'));
+	const [comicState, fetchData] = useDataApi(makeUrl('comics'), undefined, true);
 	const [dataTable, setDataTable] = useState({
 		rows: [],
 		total: 0,
@@ -22,7 +22,7 @@ const Comics = () => {
 			dataIndex: 'title',
 			render: (text, record) => (
 				<FirstColumn
-					to={`/comics?key=${record.id}`}
+					to={`/comics/${record.id}`}
 					url={`${record.thumbnail?.path}/portrait_small.${record.thumbnail?.extension}`}
 				>
 					<div className='first-column__picture' />
@@ -73,14 +73,14 @@ const Comics = () => {
 			message.error('Oops! Something happened...');
 			console.log('Error :', comicState.error);
 		}
-	}, [comicState.isSuccess]);
+	}, [comicState.isSuccess, comicState.isError]);
 
 
 	return (
 		<div>
 			<StyledTable
 				loading={comicState.isLoading}
-				title='characters'
+				title='Comics'
 				dataSource={dataTable.rows}
 				columns={columns}
 				pagination={{

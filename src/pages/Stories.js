@@ -8,7 +8,7 @@ import useDataApi from '@hooks/useDataApi';
 import { makeUrl } from '@config/util';
 
 const Stories = () => {
-	const [storiesState, fetchData] = useDataApi(makeUrl('stories'));
+	const [storiesState, fetchData] = useDataApi(makeUrl('stories'), undefined, true);
 	const [dataTable, setDataTable] = useState({
 		rows: [],
 		total: 0,

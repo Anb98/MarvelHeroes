@@ -9,6 +9,8 @@ body {
   --nav-width:12rem;
   --main-color:#1F1C3B;
   --secondary-color:#3D3159;
+  --bg-color:#4E416D;
+  --text-color: #afbed3;
 
   background: var(--secondary-color) !important;
 }

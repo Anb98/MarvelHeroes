@@ -1,5 +1,7 @@
-import { useReducer } from 'react';
+import { useReducer, useContext } from 'react';
 import axios from 'axios';
+
+import { CacheContext } from '@contexts/CacheContext';
 
 const reducer = (state, action) => {
 	switch (action.type) {
@@ -17,7 +19,7 @@ const reducer = (state, action) => {
 		return {
 			...state,
 			status: action.payload.status,
-			isSuccess: true,
+			isSuccess: Math.random(),
 			isLoading: false,
 			isError: false,
 			data: action.payload.data,
@@ -52,9 +54,12 @@ const reducer = (state, action) => {
  * @param {string} url - Url de la api a solicitar
  * @param {string} [initialMethod='get'] - Metodo inicial de la peticion a la api
  * @param {string?} headers - Header de la peticion
+ * @param {boolean?} hasCache - Cache los resultados en context
  * @returns {[state, fetchData]}
  */
-const useDataApi = (url, headers = null) => {
+const useDataApi = (url, headers = null, hasCache = false) => {
+	const { state: stateCache, setResult } = useContext(CacheContext);
+
 	const [state, dispatch] = useReducer(reducer, {
 		isSuccess: false,
 		isLoading: false,
@@ -62,6 +67,21 @@ const useDataApi = (url, headers = null) => {
 		data: null,
 		error: null,
 	});
+
+	const requestApi = async (request, stringRequest) => {
+		try {
+			const result = await axios(request);
+			const { data, status } = result;
+
+			dispatch({ type: 'FETCH_SUCCESS', payload: { data, status } });
+
+			if (hasCache) {
+				setResult(stringRequest, data);
+			}
+		} catch (error) {
+			dispatch({ type: 'FETCH_FAILURE', payload: { data: error, status: error.response?.status } });
+		}
+	};
 
 	/**
 	 * fetchData
@@ -73,20 +93,28 @@ const useDataApi = (url, headers = null) => {
 
 		if (state.isLoading) return;
 
-		try {
-			const result = await axios({
-				method,
-				url,
-				headers,
-				data: body,
-				params,
+		const request = {
+			method,
+			url,
+			headers,
+			data: body,
+			params,
+		};
+
+		const stringRequest = JSON.stringify(request);
+
+		if (!hasCache) {
+			return requestApi(request);
+		}
+
+
+		if (stateCache[stringRequest]) {
+			dispatch({
+				type: 'FETCH_SUCCESS',
+				payload: { data: stateCache[stringRequest], status: 200 },
 			});
-
-			const { data, status } = result;
-
-			dispatch({ type: 'FETCH_SUCCESS', payload: { data, status } });
-		} catch (error) {
-			dispatch({ type: 'FETCH_FAILURE', payload: { data: error, status: error.response?.status } });
+		} else {
+			requestApi(request, stringRequest);
 		}
 	};
 

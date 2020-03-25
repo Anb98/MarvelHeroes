@@ -12,7 +12,7 @@ const Main = ({ children }) => {
 	const location = useLocation();
 
 	useEffect(() => {
-		const actualPage = menu.find((el) => el.path === location.pathname);
+		const actualPage = menu.find((el) => location.pathname.includes(el.path));
 		setActualPath(actualPage.path);
 		document.title = `Marvel - ${actualPage.text}`;
 	}, [location]);

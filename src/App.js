@@ -6,23 +6,27 @@ import {
 } from 'react-router-dom';
 import Layout from '@layout/Main';
 
-import Comics from '@pages/Comics';
+import Comics from '@pages/Comic';
+import ComicsId from '@pages/Comic/Id';
 import Stories from '@pages/Stories';
-import Characters from '@pages/Characters';
+import Characters from '@pages/Character';
+import CharacterId from '@pages/Character/Id';
 
-import { CharactersProvider } from '@contexts/CharactersContext';
+import { CacheProvider } from '@contexts/CacheContext';
 
 
 const App = () => (
 	<Router>
 		<Layout>
-			<CharactersProvider>
+			<CacheProvider>
 				<Switch>
-					<Route path='/characters' component={Characters} />
-					<Route path='/comics' component={Comics} />
+					<Route exact path='/characters' component={Characters} />
+					<Route path='/characters/:id' component={CharacterId} />
+					<Route exact path='/comics' component={Comics} />
+					<Route path='/comics/:id' component={ComicsId} />
 					<Route path='/stories' component={Stories} />
 				</Switch>
-			</CharactersProvider>
+			</CacheProvider>
 		</Layout>
 	</Router>
 );

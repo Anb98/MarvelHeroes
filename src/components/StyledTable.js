@@ -37,8 +37,6 @@ StyledTable.propTypes = {
 };
 
 const Wrapper = styled.div`
---bg-color:#4E416D;
---text-color: #afbed3;
 background: var(--bg-color);
 border-radius: 13px;
 
