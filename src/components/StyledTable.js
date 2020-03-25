@@ -87,27 +87,6 @@ header {
 		}
 	}
 }
-
-.ant-pagination-item-link{
-	border: 0;
-	background:#4E416D;
-}
-
-.ant-pagination-item {
-	opacity:0.6;
-	border:0;
-	border-radius:50%;
-	background: #282449 !important;
-
-	a {
-		color: var(--text-color) !important;
-	}
-}
-
-.ant-pagination-item-active{
-	opacity:1 !important;
-}
-
 `;
 
 export default StyledTable;

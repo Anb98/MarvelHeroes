@@ -70,6 +70,7 @@ const useDataApi = (url, headers = null, hasCache = false) => {
 
 	const requestApi = async (request, stringRequest) => {
 		try {
+			dispatch({ type: 'FETCH_INIT' });
 			const result = await axios(request);
 			const { data, status } = result;
 
@@ -89,8 +90,6 @@ const useDataApi = (url, headers = null, hasCache = false) => {
 	 * @param {string} [method="get"] - tipo de metodo
 	 */
 	const fetchData = async ({ body = null, method = 'get', params = undefined } = {}) => {
-		dispatch({ type: 'FETCH_INIT' });
-
 		if (state.isLoading) return;
 
 		const request = {

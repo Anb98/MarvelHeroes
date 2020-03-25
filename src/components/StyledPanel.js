@@ -16,7 +16,11 @@ const StyledPanel = ({
 				favoritable
 				&& (
 					<a href='#' onClick={onFavorite}>
-						<img className='panel__edit' src={isFavorite ? '/icon/star.svg' : '/icon/star_border.svg'} alt='edit' />
+						<img
+							className='panel__edit'
+							alt='edit'
+							src={isFavorite ? '/icon/star.svg' : '/icon/star_border.svg'}
+						/>
 					</a>
 				)
 

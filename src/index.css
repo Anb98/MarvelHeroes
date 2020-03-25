@@ -22,3 +22,28 @@ code {
 
 @import '~antd/dist/antd.css';
 
+.ant-pagination {
+	text-align: center;
+}
+
+.ant-pagination-item-link {
+	border: 0 !important;
+	background:#4E416D !important;
+}
+
+.ant-pagination-item {
+	opacity:0.6;
+	border:0 !important;
+	border-radius:50% !important;
+	background: #282449 !important;
+}
+
+.ant-pagination-item a {
+	color: var(--text-color) !important;
+}
+
+.ant-pagination-item-active{
+	opacity:1 !important;
+}
+
+

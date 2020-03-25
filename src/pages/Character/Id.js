@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { message } from 'antd';
+import { List, message, Pagination } from 'antd';
 
 
 import styled from 'styled-components';
 
 import { makeUrl } from '@config/util';
 import useDataApi from '@hooks/useDataApi';
+
+import FirstColumn from '@components/FirstColumn';
+import InfoPanel from '@components/InfoPanel';
 import StyledPanel from '@components/StyledPanel';
 
 const Id = () => {
@@ -14,14 +17,49 @@ const Id = () => {
 	const { id } = useParams();
 
 	const [avatar, setAvatar] = useState('');
+	const [comicPage, setComicPage] = useState(1);
+
 	const [character, setCharacter] = useState({
 		name: '',
 		description: '',
+	});
+	const [comics, setCommics] = useState({
+		total: 0,
+		rows: [],
+	});
+	const [stories, setStories] = useState({
+		total: 0,
+		rows: [],
 	});
 
 	const [characterState, fetchCharacter] = useDataApi(makeUrl(`characters/${id}`), undefined, true);
 	const [comicsState, fetchComics] = useDataApi(makeUrl(`characters/${id}/comics`), undefined, true);
 	const [storiesState, fetchStories] = useDataApi(makeUrl(`characters/${id}/stories`), undefined, true);
+
+
+	useEffect(() => {
+		if (comicsState.isSuccess) {
+			const mainData = comicsState.data.data;
+
+			setCommics({
+				total: mainData.total,
+				rows: mainData.results,
+			});
+			console.log('comicsState -> mainData.results', mainData.results);
+		}
+	}, [comicsState.isSuccess, comicsState.isError]);
+
+	useEffect(() => {
+		if (storiesState.isSuccess) {
+			const mainData = storiesState.data.data;
+
+			console.log('storiesState -> mainData.results', mainData.results);
+			setStories({
+				total: mainData.total,
+				rows: mainData.results,
+			});
+		}
+	}, [storiesState.isSuccess, storiesState.isError]);
 
 
 	useEffect(() => {
@@ -33,6 +71,9 @@ const Id = () => {
 				const mainData = response.data.results[0];
 				setCharacter(mainData);
 				setAvatar(`${mainData.thumbnail?.path}/standard_medium.${mainData.thumbnail?.extension}`);
+
+				fetchComics({ params: { limit: 5, offset: 0 } });
+				fetchStories({ params: { limit: 5, offset: 0 } });
 			}
 		}
 
@@ -54,24 +95,41 @@ const Id = () => {
 	return (
 		<Wrapper avatar={avatar}>
 			<StyledPanel title='Character' favoritable>
-				<div className='info'>
-					<div className='info__header'>
-						<div className='info__avatar' />
-						<h1 className='info__nombre'>{character.name}</h1>
-					</div>
-
-					<div>
-						<label className='info__label'>Description</label>
-						<div className='info__descripcion'>
-							{ character.description ? character.description : 'No description 😢'}
-						</div>
-					</div>
-				</div>
+				<InfoPanel
+					avatar={avatar}
+					title={character.name}
+					description={character.description}
+				/>
 			</StyledPanel>
+
 
 			<StyledPanel title='Comics'>
-				ayuda
+				<List
+					loading={comicsState.isLoading}
+					size='small'
+					dataSource={comics.rows}
+					renderItem={(item) => (
+						<List.Item>
+							<FirstColumn
+								href={`/comics/${item.id}`}
+								title={item.title}
+								avatar={`${item.thumbnail?.path}/standard_small.${item.thumbnail?.extension}`}
+							/>
+						</List.Item>
+					)}
+				/>
+				<Pagination
+					current={comicPage}
+					onChange={(page, pageSize) => {
+						const offset = (page - 1) * pageSize;
+						fetchComics({ params: { limit: 5, offset } });
+						setComicPage(page);
+					}}
+					total={comics.total}
+					pageSize={5}
+				/>
 			</StyledPanel>
+
 
 			<StyledPanel title='Stories'>
 				ayuda
@@ -83,53 +141,6 @@ const Id = () => {
 const Wrapper = styled.div`
 	display:flex;
 	flex-wrap:wrap;
-
-	.panel {
-		width:calc( 50% - 1.5em);
-		background: var(--bg-color);
-		border-radius:9px;
-		margin: 18px 9px;
-		padding:1.5em 1.5em 2em 1.5em;
-	}
-
-	.info {
-		--avatar-size: 6em;
-		&__header {
-			display:flex;
-			align-items:center;
-		}
-		
-		&__avatar {
-			border:3px solid #ffce07;
-			width:var(--avatar-size);
-			height:var(--avatar-size);
-			background: url(${({ avatar }) => avatar}) no-repeat !important;
-			border-radius:50%;
-			background-size:cover !important;
-		}
-
-		&__nombre {
-			word-wrap: break-word;
-			margin-left:0.5em;
-			border: 0;
-			font-weight: bold;
-			color: black;
-			font-size: 2em;
-			flex:1;
-			width: calc( 100% - var(--avatar-size) - 0.5em);
-		}
-
-		&__descripcion {
-			color: var(--text-color);
-		}
-
-		&__label {
-			display:block;
-			padding-top:1em;
-			color: black;
-			font-weight:bold;
-		}
-	}
 `;
 
 export default Id;
