@@ -24,7 +24,7 @@ const StyledTable = ({
 				&& (
 					<Search
 						placeholder='Search'
-						onSearch={(value) => console.log(value)}
+						onSearch={onSearch}
 						enterButton
 					/>
 				)
@@ -37,8 +37,8 @@ const StyledTable = ({
 							defaultValue={selectOptions[0].value}
 						>
 							{
-								selectOptions.map((el) => (
-									<Option value={el.value}>{el.text}</Option>
+								selectOptions.map((el, i) => (
+									<Option key={i} value={el.value}>{el.text}</Option>
 
 								))
 							}
@@ -124,6 +124,11 @@ header {
 }
 
 .ant-table {
+
+	.ant-table-filter-trigger-container-open,
+	.ant-table-filter-trigger-container:hover{
+		background: #3E325A !important;
+	}
 
 	thead th {
 		&.ant-table-column-has-sorters:hover,

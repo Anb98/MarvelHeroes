@@ -9,10 +9,19 @@ import { makeUrl } from '@config/util';
 
 
 const Comics = () => {
+	const selectOptions = [
+		{ text: 'Title', value: 'titleStartsWith' },
+		{ text: 'Issue number', value: 'issueNumber' },
+	];
+
+
 	const [comicState, fetchData] = useDataApi(makeUrl('comics'), undefined, true);
 	const [currentPage, setCurrentPage] = useState(1);
 
-	const [searchFilters, setSearchFilters] = useState([]);
+	const [filterSelected, setFilterSelected] = useState(selectOptions[0].value);
+	const [filterValue, setFilterValue] = useState('');
+
+	const [searchFilters, setSearchFilters] = useState('');
 	const [isFiltering, setIsFiltering] = useState(false);
 
 	const [isOrdering, setIsOrdering] = useState(false);
@@ -70,8 +79,10 @@ const Comics = () => {
 
 	const handleTableChange = (pagination, filters, sorter) => {
 		if (filters.format) {
-			setSearchFilters(filters.format);
-			setIsFiltering(Math.random());
+			if (filters.format[0] !== searchFilters) {
+				setSearchFilters(filters.format[0]);
+				setIsFiltering(Math.random());
+			}
 		} else {
 			setIsFiltering(false);
 		}
@@ -93,24 +104,28 @@ const Comics = () => {
 		const offset = (page - 1) * pageSize;
 		setCurrentPage(page);
 
+		if (!!filterValue && filterSelected === 'issueNumber' && isNaN(Number(filterValue))) {
+			return message.warning('Issue number must be a number');
+		}
+
 		fetchData({
 			params: {
 				offset,
 				limit: pageSize,
 				...isOrdering && { orderBy: isDescOrder ? '-issueNumber' : 'issueNumber' },
-				...isFiltering && { format: searchFilters[0] },
+				...isFiltering && { format: searchFilters },
+				...!!filterValue && { [filterSelected]: filterValue },
 			},
 		});
 	};
 
 	useEffect(() => {
-		onChange(currentPage, 10);
-	}, [isOrdering, isDescOrder, isFiltering]);
+		onChange(1, 10);
+	}, [isOrdering, isDescOrder, isFiltering, filterValue]);
 
 	useEffect(() => {
 		if (comicState.isSuccess) {
 			const response = comicState.data;
-			console.log('Comics -> response', response);
 
 			setDataTable({
 				rows: response?.data?.results || [],
@@ -129,12 +144,9 @@ const Comics = () => {
 		<div>
 			<StyledTable
 				title='Comics'
-				onSearch={(...rest) => console.log(rest)}
-				onSelect={(...rest) => console.log(rest)}
-				selectOptions={[
-					{ text: 'Title', value: 'titleStartsWith' },
-					{ text: 'Issue number', value: 'issueNumber' },
-				]}
+				onSearch={(value) => setFilterValue(value)}
+				onSelect={(value) => setFilterSelected(value)}
+				selectOptions={selectOptions}
 				table={{
 					onChange: handleTableChange,
 					rowKey: (record) => record.id,
@@ -142,6 +154,7 @@ const Comics = () => {
 					dataSource: dataTable.rows,
 					columns,
 					pagination: {
+						current: currentPage,
 						onChange,
 						total: dataTable.total,
 						pageSize: 10,

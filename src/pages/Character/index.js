@@ -8,7 +8,17 @@ import useDataApi from '@hooks/useDataApi';
 import { makeUrl } from '@config/util';
 
 const Characters = () => {
+	const selectOptions = [
+		{ text: 'Name', value: 'nameStartsWith' },
+		{ text: 'Comics', value: 'comics' },
+		{ text: 'Stories', value: 'stories' },
+	];
+
 	const [characterState, fetchData] = useDataApi(makeUrl('characters'), undefined, true);
+
+	const [filterSelected, setFilterSelected] = useState(selectOptions[0].value);
+	const [filterValue, setFilterValue] = useState('');
+
 	const [currentPage, setCurrentPage] = useState(1);
 	const [isDescOrder, setIsDescOrder] = useState(false);
 
@@ -59,14 +69,15 @@ const Characters = () => {
 				offset,
 				orderBy: isDescOrder ? '-name' : 'name',
 				limit: pageSize,
+				...!!filterValue && { [filterSelected]: filterValue },
 			},
 		});
 	};
 
 
 	useEffect(() => {
-		onChange(currentPage, 10);
-	}, [isDescOrder]);
+		onChange(1, 10);
+	}, [isDescOrder, filterValue]);
 
 	useEffect(() => {
 		if (characterState.isSuccess) {
@@ -89,13 +100,9 @@ const Characters = () => {
 		<div>
 			<StyledTable
 				title='Characters'
-				onSearch={(...rest) => console.log(rest)}
-				onSelect={(...rest) => console.log(rest)}
-				selectOptions={[
-					{ text: 'Name', value: 'nameStartsWith' },
-					{ text: 'Comics', value: 'comics' },
-					{ text: 'Stories', value: 'stories' },
-				]}
+				onSearch={(value) => setFilterValue(value)}
+				onSelect={(value) => setFilterSelected(value)}
+				selectOptions={selectOptions}
 				table={{
 					onChange: handleTableChange,
 					rowKey: (record) => record.id,
@@ -103,6 +110,7 @@ const Characters = () => {
 					dataSource: dataTable.rows,
 					columns,
 					pagination: {
+						current: currentPage,
 						onChange,
 						total: dataTable.total,
 						pageSize: 10,

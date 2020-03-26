@@ -30,7 +30,7 @@ const InfoPanel = ({
 				</strong>
 			</label>
 			<div className='info__descripcion'>
-				{ description || isStory ? 'No original issue 😢' : 'No description 😢'}
+				{ description || (isStory ? 'No original issue 😢' : 'No description 😢')}
 			</div>
 		</div>
 	</Wrapper>
