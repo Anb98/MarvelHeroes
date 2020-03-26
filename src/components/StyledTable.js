@@ -2,42 +2,75 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Table } from 'antd';
+import { Table, Input, Select } from 'antd';
+
+const { Search } = Input;
+const { Option } = Select;
+
 
 const StyledTable = ({
 	title,
-	dataSource,
-	columns,
-	loading,
-	pagination,
-	...rest
+	onSearch,
+	onSelect,
+	selectOptions,
+	table,
 }) => (
 	<Wrapper>
 		<header>
 			{title}
+			<div className='controls'>
+				{
+					onSearch
+				&& (
+					<Search
+						placeholder='Search'
+						onSearch={(value) => console.log(value)}
+						enterButton
+					/>
+				)
+				}
+				{
+					selectOptions.length !== 0 && onSelect && (
+
+						<Select
+							onChange={onSelect}
+							defaultValue={selectOptions[0].value}
+						>
+							{
+								selectOptions.map((el) => (
+									<Option value={el.value}>{el.text}</Option>
+
+								))
+							}
+						</Select>
+					)
+				}
+			</div>
 		</header>
-		<Table
-			dataSource={dataSource}
-			columns={columns}
-			loading={loading}
-			pagination={pagination}
-			{...rest}
-		/>
+		<Table {...table} />
 	</Wrapper>
 );
 
 StyledTable.defaultProps = {
-	loading: false,
-	rest: [],
+	selectOptions: [],
+	onSearch: false,
+	onSelect: false,
 };
 
 StyledTable.propTypes = {
 	title: PropTypes.string.isRequired,
-	dataSource: PropTypes.arrayOf(PropTypes.object).isRequired,
-	columns: PropTypes.arrayOf(PropTypes.object).isRequired,
-	loading: PropTypes.bool,
-	pagination: PropTypes.object,
-	rest: PropTypes.array,
+	table: PropTypes.shape({
+		dataSource: PropTypes.arrayOf(PropTypes.object).isRequired,
+		columns: PropTypes.arrayOf(PropTypes.object).isRequired,
+		loading: PropTypes.bool,
+		pagination: PropTypes.object,
+	}).isRequired,
+	onSearch: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+	onSelect: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
+	selectOptions: PropTypes.arrayOf(PropTypes.shape({
+		text: PropTypes.string,
+		value: PropTypes.string,
+	})),
 };
 
 const Wrapper = styled.div`
@@ -45,8 +78,43 @@ background: var(--bg-color);
 border-radius: 13px;
 
 header {
-	padding: 1.25em 0 0.5em 2em;
+	display:flex;
+	justify-content: space-between;
+	padding: 1.25em 2em 0.5em 2em;
 	color: var(--text-color);
+
+	.controls{
+		--border-radius:15px;
+		
+		display:flex;
+		flex-wrap:wrap;
+
+		& > span {
+			width:225px;
+			border-radius: var(--border-radius) !important;
+		}
+
+		& > div{
+			margin-left:1em;
+			width:175px;
+		}
+
+		.ant-input-group > .ant-input:first-child, 
+		.ant-input-group-addon:first-child {
+			border-top-left-radius: var(--border-radius);
+			border-bottom-left-radius: var(--border-radius);
+		}
+
+		.ant-input-group-addon,
+		.ant-btn.ant-input-search-button.ant-btn-primary {
+			border-top-right-radius: var(--border-radius);
+			border-bottom-right-radius: var(--border-radius);
+		}
+
+		.ant-select-selector {
+			border-radius: var(--border-radius) !important;
+		}
+	}
 }
 
 

@@ -89,15 +89,24 @@ const Characters = () => {
 		<div>
 			<StyledTable
 				title='Characters'
-				onChange={handleTableChange}
-				rowKey={(record) => record.id}
-				loading={characterState.isLoading}
-				dataSource={dataTable.rows}
-				columns={columns}
-				pagination={{
-					onChange,
-					total: dataTable.total,
-					pageSize: 10,
+				onSearch={(...rest) => console.log(rest)}
+				onSelect={(...rest) => console.log(rest)}
+				selectOptions={[
+					{ text: 'Name', value: 'nameStartsWith' },
+					{ text: 'Comics', value: 'comics' },
+					{ text: 'Stories', value: 'stories' },
+				]}
+				table={{
+					onChange: handleTableChange,
+					rowKey: (record) => record.id,
+					loading: characterState.isLoading,
+					dataSource: dataTable.rows,
+					columns,
+					pagination: {
+						onChange,
+						total: dataTable.total,
+						pageSize: 10,
+					},
 				}}
 			/>
 		</div>

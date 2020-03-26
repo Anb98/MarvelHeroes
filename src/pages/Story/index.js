@@ -74,14 +74,16 @@ const Stories = () => {
 		<div>
 			<StyledTable
 				title='Stories'
-				rowKey={(record) => record.id}
-				loading={storiesState.isLoading}
-				dataSource={dataTable.rows}
-				columns={columns}
-				pagination={{
-					onChange,
-					total: dataTable.total,
-					pageSize: 10,
+				table={{
+					rowKey: (record) => record.id,
+					loading: storiesState.isLoading,
+					dataSource: dataTable.rows,
+					columns,
+					pagination: {
+						onChange,
+						total: dataTable.total,
+						pageSize: 10,
+					},
 				}}
 			/>
 		</div>

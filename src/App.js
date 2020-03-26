@@ -1,6 +1,7 @@
 import React from 'react';
 import {
 	BrowserRouter as Router,
+	Redirect,
 	Switch,
 	Route,
 } from 'react-router-dom';
@@ -21,6 +22,7 @@ const App = () => (
 		<Layout>
 			<CacheProvider>
 				<Switch>
+					<Redirect exact from='/' to='characters' />
 					<Route exact path='/characters' component={Characters} />
 					<Route path='/characters/:id' component={CharacterId} />
 					<Route exact path='/comics' component={Comics} />

@@ -13,8 +13,10 @@ const Main = ({ children }) => {
 
 	useEffect(() => {
 		const actualPage = menu.find((el) => location.pathname.includes(el.path));
-		setActualPath(actualPage.path);
-		document.title = `Marvel - ${actualPage.text}`;
+		if (actualPage) {
+			setActualPath(actualPage.path);
+			document.title = `Marvel - ${actualPage.text}`;
+		}
 	}, [location]);
 
 
