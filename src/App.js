@@ -1,4 +1,8 @@
-import React from 'react';
+import React,
+{
+	lazy,
+	Suspense,
+} from 'react';
 import {
 	BrowserRouter as Router,
 	Redirect,
@@ -7,29 +11,31 @@ import {
 } from 'react-router-dom';
 import Layout from '@layout/Main';
 
-import Comics from '@pages/Comic';
-import ComicsId from '@pages/Comic/Id';
-import Stories from '@pages/Story';
-import StoriesId from '@pages/Story/Id';
-import Characters from '@pages/Character';
-import CharacterId from '@pages/Character/Id';
-
 import { CacheProvider } from '@contexts/CacheContext';
+
+const Comics = lazy(() => import('@pages/Comic'));
+const ComicsId = lazy(() => import('@pages/Comic/Id'));
+const Stories = lazy(() => import('@pages/Story'));
+const StoriesId = lazy(() => import('@pages/Story/Id'));
+const Characters = lazy(() => import('@pages/Character'));
+const CharacterId = lazy(() => import('@pages/Character/Id'));
 
 
 const App = () => (
 	<Router>
 		<Layout>
 			<CacheProvider>
-				<Switch>
-					<Redirect exact from='/' to='characters' />
-					<Route exact path='/characters' component={Characters} />
-					<Route path='/characters/:id' component={CharacterId} />
-					<Route exact path='/comics' component={Comics} />
-					<Route path='/comics/:id' component={ComicsId} />
-					<Route exact path='/stories' component={Stories} />
-					<Route path='/stories/:id' component={StoriesId} />
-				</Switch>
+				<Suspense fallback={<div>Loading...</div>}>
+					<Switch>
+						<Redirect exact from='/' to='characters' />
+						<Route exact path='/characters' component={Characters} />
+						<Route path='/characters/:id' component={CharacterId} />
+						<Route exact path='/comics' component={Comics} />
+						<Route path='/comics/:id' component={ComicsId} />
+						<Route exact path='/stories' component={Stories} />
+						<Route path='/stories/:id' component={StoriesId} />
+					</Switch>
+				</Suspense>
 			</CacheProvider>
 		</Layout>
 	</Router>
