@@ -13,6 +13,8 @@ import Layout from '@layout/Main';
 
 import { CacheProvider } from '@contexts/CacheContext';
 
+import Loading from '@pages/Loading';
+
 const Comics = lazy(() => import('@pages/Comic'));
 const ComicsId = lazy(() => import('@pages/Comic/Id'));
 const Stories = lazy(() => import('@pages/Story'));
@@ -25,7 +27,7 @@ const App = () => (
 	<Router>
 		<Layout>
 			<CacheProvider>
-				<Suspense fallback={<div>Loading...</div>}>
+				<Suspense fallback={<Loading />}>
 					<Switch>
 						<Redirect exact from='/' to='characters' />
 						<Route exact path='/characters' component={Characters} />

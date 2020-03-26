@@ -37,7 +37,7 @@ Main.propTypes = {
 const Body = styled.div`
 .main-container{
 	margin-left: var(--nav-width);
-	padding: 0 2.5em;
+	padding: 1em 2.5em;
 }
 `;
 

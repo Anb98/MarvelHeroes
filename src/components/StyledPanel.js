@@ -50,7 +50,7 @@ const Wrapper = styled.div`
 	width:calc( 50% - 1.5em);
 	background:var(--bg-color);
 	border-radius:9px;
-	margin: 18px 9px;
+	margin: 0px 9px 18px;
 	padding:1.5em;
 
 	header {
