@@ -15,13 +15,13 @@ const StyledPanel = ({
 			{
 				favoritable
 				&& (
-					<a href='#' onClick={onFavorite}>
+					<button type='button' onClick={onFavorite}>
 						<img
 							className='panel__edit'
 							alt='edit'
 							src={isFavorite ? '/icon/star.svg' : '/icon/star_border.svg'}
 						/>
-					</a>
+					</button>
 				)
 
 			}
@@ -62,6 +62,12 @@ const Wrapper = styled.div`
 
 	.panel__text-title {
 		color: #afbed3;
+	}
+
+	button {
+		background: transparent !important;
+		border:0 !important;
+		cursor:pointer
 	}
 
 	.panel__edit{

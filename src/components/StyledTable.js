@@ -10,6 +10,7 @@ const StyledTable = ({
 	columns,
 	loading,
 	pagination,
+	...rest
 }) => (
 	<Wrapper>
 		<header>
@@ -20,12 +21,14 @@ const StyledTable = ({
 			columns={columns}
 			loading={loading}
 			pagination={pagination}
+			{...rest}
 		/>
 	</Wrapper>
 );
 
 StyledTable.defaultProps = {
 	loading: false,
+	rest: [],
 };
 
 StyledTable.propTypes = {
@@ -34,6 +37,7 @@ StyledTable.propTypes = {
 	columns: PropTypes.arrayOf(PropTypes.object).isRequired,
 	loading: PropTypes.bool,
 	pagination: PropTypes.object,
+	rest: PropTypes.array,
 };
 
 const Wrapper = styled.div`
@@ -52,6 +56,14 @@ header {
 }
 
 .ant-table {
+
+	thead th {
+		&.ant-table-column-has-sorters:hover,
+		&.ant-table-column-sort {
+			background: #3E325A !important;
+		}
+	}
+
 	th:first-child, td:first-child {
 		padding-left:2em !important;
 	}

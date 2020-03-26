@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -55,7 +56,6 @@ const Stories = () => {
 	useEffect(() => {
 		if (storiesState.isSuccess) {
 			const response = storiesState.data;
-			console.log('Stories -> storiesState.data', storiesState.data);
 
 			setDataTable({
 				rows: response?.data?.results || [],
@@ -74,6 +74,7 @@ const Stories = () => {
 		<div>
 			<StyledTable
 				title='Stories'
+				rowKey={(record) => record.id}
 				loading={storiesState.isLoading}
 				dataSource={dataTable.rows}
 				columns={columns}
