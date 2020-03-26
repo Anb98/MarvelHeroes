@@ -6,17 +6,31 @@ const InfoPanel = ({
 	title,
 	avatar,
 	description,
+	isStory,
 }) => (
 	<Wrapper avatar={avatar}>
 		<div className='info__header'>
-			<div className='info__avatar' />
+			{
+				!isStory
+			&& <div className='info__avatar' />
+			}
 			<h1 className='info__nombre'>{title}</h1>
 		</div>
 
 		<div>
-			<label className='info__label'><strong>Description</strong></label>
+
+			<label className='info__label'>
+				<strong>
+					{
+						isStory
+							? 'Original Issue'
+							: 'Description'
+					}
+
+				</strong>
+			</label>
 			<div className='info__descripcion'>
-				{ description || 'No description 😢'}
+				{ description || isStory ? 'No original issue 😢' : 'No description 😢'}
 			</div>
 		</div>
 	</Wrapper>
@@ -24,12 +38,15 @@ const InfoPanel = ({
 
 InfoPanel.defaultProps = {
 	description: '',
+	avatar: '',
+	isStory: false,
 };
 
 InfoPanel.propTypes = {
 	title: PropTypes.string.isRequired,
-	avatar: PropTypes.string.isRequired,
+	avatar: PropTypes.string,
 	description: PropTypes.string,
+	isStory: PropTypes.bool,
 };
 
 const Wrapper = styled.div`

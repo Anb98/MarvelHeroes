@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory, Link } from 'react-router-dom';
 import { List, message, Pagination } from 'antd';
 
 
@@ -18,6 +18,7 @@ const Id = () => {
 
 	const [avatar, setAvatar] = useState('');
 	const [comicPage, setComicPage] = useState(1);
+	const [storiesPage, setStoriesPage] = useState(1);
 
 	const [character, setCharacter] = useState({
 		name: '',
@@ -45,15 +46,12 @@ const Id = () => {
 				total: mainData.total,
 				rows: mainData.results,
 			});
-			console.log('comicsState -> mainData.results', mainData.results);
 		}
 	}, [comicsState.isSuccess, comicsState.isError]);
 
 	useEffect(() => {
 		if (storiesState.isSuccess) {
 			const mainData = storiesState.data.data;
-
-			console.log('storiesState -> mainData.results', mainData.results);
 			setStories({
 				total: mainData.total,
 				rows: mainData.results,
@@ -66,7 +64,6 @@ const Id = () => {
 		if (characterState.isSuccess) {
 			const response = characterState.data;
 
-			console.log('Id -> response', response);
 			if (response.data.results.length) {
 				const mainData = response.data.results[0];
 				setCharacter(mainData);
@@ -80,11 +77,11 @@ const Id = () => {
 		if (characterState.isError) {
 			if (characterState.status === 404) {
 				message.error(`Oops! This character doesn't exists`);
-				return history.push('/characters');
+				history.push('/characters');
+			} else {
+				message.error('Oops! Something happened...');
+				console.log('Error :', characterState.error);
 			}
-
-			message.error('Oops! Something happened...');
-			console.log('Error :', characterState.error);
 		}
 	}, [characterState.isSuccess, characterState.isError]);
 
@@ -132,7 +129,28 @@ const Id = () => {
 
 
 			<StyledPanel title='Stories'>
-				ayuda
+				<List
+					loading={storiesState.isLoading}
+					size='small'
+					dataSource={stories.rows}
+					renderItem={(item) => (
+						<List.Item>
+							<Link to={`/stories/${item.id}`}>
+								{item.title}
+							</Link>
+						</List.Item>
+					)}
+				/>
+				<Pagination
+					current={storiesPage}
+					onChange={(page, pageSize) => {
+						const offset = (page - 1) * pageSize;
+						fetchStories({ params: { limit: 5, offset } });
+						setStoriesPage(page);
+					}}
+					total={stories.total}
+					pageSize={5}
+				/>
 			</StyledPanel>
 		</Wrapper>
 	);

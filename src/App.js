@@ -8,7 +8,8 @@ import Layout from '@layout/Main';
 
 import Comics from '@pages/Comic';
 import ComicsId from '@pages/Comic/Id';
-import Stories from '@pages/Stories';
+import Stories from '@pages/Story';
+import StoriesId from '@pages/Story/Id';
 import Characters from '@pages/Character';
 import CharacterId from '@pages/Character/Id';
 
@@ -24,7 +25,8 @@ const App = () => (
 					<Route path='/characters/:id' component={CharacterId} />
 					<Route exact path='/comics' component={Comics} />
 					<Route path='/comics/:id' component={ComicsId} />
-					<Route path='/stories' component={Stories} />
+					<Route exact path='/stories' component={Stories} />
+					<Route path='/stories/:id' component={StoriesId} />
 				</Switch>
 			</CacheProvider>
 		</Layout>

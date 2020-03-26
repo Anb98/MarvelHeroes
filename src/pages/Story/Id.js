@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useHistory, Link } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { List, message, Pagination } from 'antd';
 
 
@@ -16,32 +16,32 @@ const Id = () => {
 	const history = useHistory();
 	const { id } = useParams();
 
-	const [avatar, setAvatar] = useState('');
 	const [characterPage, setCharacterPage] = useState(1);
-	const [storiesPage, setStoriesPage] = useState(1);
+	const [comicsPage, setComicsPage] = useState(1);
 
-	const [comic, setComic] = useState({
+	const [story, setStory] = useState({
+		title: '',
+		originalIssue: { name: '' },
+	});
+
+	const [comics, setComics] = useState({
 		title: '',
 		description: '',
 	});
-	const [character, setCharacter] = useState({
-		total: 0,
-		rows: [],
-	});
-	const [stories, setStories] = useState({
+	const [characters, setCharacters] = useState({
 		total: 0,
 		rows: [],
 	});
 
-	const [comicsState, fetchComics] = useDataApi(makeUrl(`comics/${id}`), undefined, true);
-	const [charactersState, fetchCharacters] = useDataApi(makeUrl(`comics/${id}/characters`), undefined, true);
-	const [storiesState, fetchStories] = useDataApi(makeUrl(`comics/${id}/stories`), undefined, true);
+	const [storyState, fetchStory] = useDataApi(makeUrl(`stories/${id}`), undefined, true);
+	const [comicsState, fetchComics] = useDataApi(makeUrl(`stories/${id}/comics`), undefined, true);
+	const [charactersState, fetchCharacters] = useDataApi(makeUrl(`stories/${id}/characters`), undefined, true);
 
 
 	useEffect(() => {
 		if (charactersState.isSuccess) {
 			const mainData = charactersState.data.data;
-			setCharacter({
+			setCharacters({
 				total: mainData.total,
 				rows: mainData.results,
 			});
@@ -49,60 +49,60 @@ const Id = () => {
 	}, [charactersState.isSuccess, charactersState.isError]);
 
 	useEffect(() => {
-		if (storiesState.isSuccess) {
-			const mainData = storiesState.data.data;
-			setStories({
+		if (comicsState.isSuccess) {
+			const mainData = comicsState.data.data;
+			setComics({
 				total: mainData.total,
 				rows: mainData.results,
 			});
 		}
-	}, [storiesState.isSuccess, storiesState.isError]);
+	}, [comicsState.isSuccess, comicsState.isError]);
 
 
 	useEffect(() => {
-		if (comicsState.isSuccess) {
-			const response = comicsState.data;
+		if (storyState.isSuccess) {
+			const response = storyState.data;
 
 			if (response.data.results.length) {
 				const mainData = response.data.results[0];
-				setComic(mainData);
-				setAvatar(`${mainData.thumbnail?.path}/standard_medium.${mainData.thumbnail?.extension}`);
+				setStory(mainData);
 
 				fetchCharacters({ params: { limit: 5, offset: 0 } });
-				fetchStories({ params: { limit: 5, offset: 0 } });
+				fetchComics({ params: { limit: 5, offset: 0 } });
 			}
 		}
 
-		if (comicsState.isError) {
-			if (comicsState.status === 404) {
+		if (storyState.isError) {
+			if (storyState.status === 404) {
 				message.error(`Oops! This comic doesn't exists`);
-				history.push('/comics');
+				history.push('/stories');
 			} else {
 				message.error('Oops! Something happened...');
-				console.log('Error :', comicsState.error);
+				console.log('Error :', storyState.error);
 			}
 		}
-	}, [comicsState.isSuccess, comicsState.isError]);
+	}, [storyState.isSuccess, storyState.isError]);
 
 	useEffect(() => {
-		fetchComics();
+		fetchStory();
 	}, []);
 
 	return (
 		<Wrapper>
-			<StyledPanel title='Comic' favoritable>
+			<StyledPanel title='Story' favoritable>
 				<InfoPanel
-					avatar={avatar}
-					title={comic.title}
-					description={comic.description}
+					isStory
+					title={story.title}
+					description={story.originalIssue?.name}
 				/>
 			</StyledPanel>
+
 
 			<StyledPanel title='Characters'>
 				<List
 					loading={charactersState.isLoading}
 					size='small'
-					dataSource={character.rows}
+					dataSource={characters.rows}
 					renderItem={(item) => (
 						<List.Item>
 							<FirstColumn
@@ -120,32 +120,35 @@ const Id = () => {
 						fetchCharacters({ params: { limit: 5, offset } });
 						setCharacterPage(page);
 					}}
-					total={character.total}
+					total={characters.total}
 					pageSize={5}
 				/>
 			</StyledPanel>
 
-			<StyledPanel title='Stories'>
+
+			<StyledPanel title='Comics'>
 				<List
-					loading={storiesState.isLoading}
+					loading={comicsState.isLoading}
 					size='small'
-					dataSource={stories.rows}
+					dataSource={comics.rows}
 					renderItem={(item) => (
 						<List.Item>
-							<Link to={`/stories/${item.id}`}>
-								{item.title}
-							</Link>
+							<FirstColumn
+								href={`/comics/${item.id}`}
+								title={item.title}
+								avatar={`${item.thumbnail?.path}/standard_small.${item.thumbnail?.extension}`}
+							/>
 						</List.Item>
 					)}
 				/>
 				<Pagination
-					current={storiesPage}
+					current={comicsPage}
 					onChange={(page, pageSize) => {
 						const offset = (page - 1) * pageSize;
-						fetchCharacters({ params: { limit: 5, offset } });
-						setStoriesPage(page);
+						fetchComics({ params: { limit: 5, offset } });
+						setComicsPage(page);
 					}}
-					total={stories.total}
+					total={comics.total}
 					pageSize={5}
 				/>
 			</StyledPanel>

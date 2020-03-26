@@ -17,26 +17,22 @@ const Stories = () => {
 	const columns = [
 		{
 			title: 'Title',
-			width: 250,
 			dataIndex: 'title',
 			render: (text, record) => (
-				<FirstColumn
-					to={`/characters?key=${record.id}`}
-					url={`${record.thumbnail?.path}/portrait_small.${record.thumbnail?.extension}`}
-				>
-					<span className='first-column__text'>{text}</span>
+				<FirstColumn to={`/stories/${record.id}`}>
+					{text}
 				</FirstColumn>
 			),
 		},
 		{
-			title: 'Description',
-			dataIndex: 'description',
+			title: 'Original issue',
+			dataIndex: 'originalIssue',
 			render: (text) => {
-				if (!text) return 'No description 😢';
+				if (!text?.name) return 'No original issue 😢';
 
-				if (text.length > 130) return `${text.substring(0, 130)}...`;
+				if (text?.name?.length > 130) return `${text?.name?.substring(0, 130)}...`;
 
-				return text;
+				return text?.name;
 			},
 		},
 	];
@@ -77,8 +73,8 @@ const Stories = () => {
 	return (
 		<div>
 			<StyledTable
+				title='Stories'
 				loading={storiesState.isLoading}
-				title='characters'
 				dataSource={dataTable.rows}
 				columns={columns}
 				pagination={{
@@ -92,13 +88,11 @@ const Stories = () => {
 };
 
 const FirstColumn = styled(Link)`
-	display:flex;
-	cursor:pointer;
-	align-items:center;
-
-	.first-column__text {
-		word-wrap: break-word;
-		font-weight:bold;
+	word-wrap: break-word;
+	font-weight:bold;
+	color: var(--text-color);
+	&:hover{
+		text-decoration:underline;
 	}
 `;
 
