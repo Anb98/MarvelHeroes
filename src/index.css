@@ -20,7 +20,6 @@ code {
     monospace;
 }
 
-@import '~antd/dist/antd.css';
 
 .ant-pagination {
 	text-align: center;
