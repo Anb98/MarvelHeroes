@@ -14,6 +14,7 @@ const Comics = () => {
 		{ text: 'Issue number', value: 'issueNumber' },
 	];
 
+	const [width, setWidth] = useState(0);
 
 	const [comicState, fetchData] = useDataApi(makeUrl('comics'), undefined, true);
 	const [currentPage, setCurrentPage] = useState(1);
@@ -47,17 +48,20 @@ const Comics = () => {
 		{
 			title: 'Description',
 			dataIndex: 'description',
+			className: width < 476 && 'hidden',
 			render: renderDescription,
 		},
 		{
 			title: 'Issue Number',
 			dataIndex: 'issueNumber',
+			className: width < 773 && 'hidden',
 			sorter: true,
 		},
 		{
 			title: 'Format',
 			dataIndex: 'format',
 			filterMultiple: false,
+			className: width < 572 && 'hidden',
 			filters: [
 				{ text: 'Comic', value: 'comic' },
 				{ text: 'Magazine', value: 'magazine' },
@@ -112,6 +116,20 @@ const Comics = () => {
 			},
 		});
 	};
+
+	const resizeHandler = () => {
+		const currentWidth = document.body.clientWidth;
+		setWidth(currentWidth);
+	};
+
+	useEffect(() => {
+		resizeHandler();
+		window.addEventListener('resize', resizeHandler);
+
+		return () => {
+			window.removeEventListener('resize', resizeHandler);
+		};
+	}, []);
 
 	useEffect(() => {
 		onChange(1, 10);

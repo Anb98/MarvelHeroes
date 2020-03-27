@@ -9,6 +9,7 @@ import useDataApi from '@hooks/useDataApi';
 import { makeUrl, renderDescription } from '@config/util';
 
 const Stories = () => {
+	const [width, setWidth] = useState(0);
 	const [storiesState, fetchData] = useDataApi(makeUrl('stories'), undefined, true);
 	const [dataTable, setDataTable] = useState({
 		rows: [],
@@ -28,6 +29,7 @@ const Stories = () => {
 		{
 			title: 'Original issue',
 			dataIndex: 'originalIssue',
+			className: width < 368 && 'hidden',
 			render: (obj) => renderDescription(obj.name),
 		},
 	];
@@ -41,6 +43,20 @@ const Stories = () => {
 			},
 		});
 	};
+
+	const resizeHandler = () => {
+		const currentWidth = document.body.clientWidth;
+		setWidth(currentWidth);
+	};
+
+	useEffect(() => {
+		resizeHandler();
+		window.addEventListener('resize', resizeHandler);
+
+		return () => {
+			window.removeEventListener('resize', resizeHandler);
+		};
+	}, []);
 
 
 	useEffect(() => {

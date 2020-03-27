@@ -53,6 +53,11 @@ const Wrapper = styled.div`
 	margin: 0px 9px 18px;
 	padding:1.5em;
 
+	
+	@media (max-width: 650px) {
+		width: calc(100% - 1.5em);
+	}
+
 	header {
 		margin-bottom:1.5em;
 		display:flex;

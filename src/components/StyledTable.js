@@ -79,6 +79,7 @@ border-radius: 13px;
 
 header {
 	display:flex;
+	flex-wrap:wrap;
 	justify-content: space-between;
 	padding: 1.25em 2em 0.5em 2em;
 	color: var(--text-color);
@@ -87,7 +88,14 @@ header {
 		--border-radius:15px;
 		
 		display:flex;
-		flex-wrap:wrap;
+		flex-wrap:wrap-reverse;
+
+		
+		@media (max-width: 625px) {
+			margin-top:1em;
+			width: 100%;
+			justify-content:center;
+		}
 
 		& > span {
 			width:225px;
@@ -97,6 +105,12 @@ header {
 		& > div{
 			margin-left:1em;
 			width:175px;
+
+			@media (max-width: 539px) {
+				margin-left:0px;
+				margin-bottom:1em;
+				width:225px;
+			}
 		}
 
 		.ant-input-group > .ant-input:first-child, 

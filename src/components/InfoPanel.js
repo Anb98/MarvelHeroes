@@ -52,8 +52,11 @@ InfoPanel.propTypes = {
 const Wrapper = styled.div`
 	--avatar-size: 6em;
 
+
 	.info__header {
 		display:flex;
+		flex-wrap:wrap;
+		justify-content:center;
 		align-items:center;
 	}
 	
@@ -74,7 +77,12 @@ const Wrapper = styled.div`
 		color: var(--text-color);
 		font-size: 2em;
 		flex:1;
-		width: calc( 100% - var(--avatar-size) - 0.5em);
+
+		@media (max-width: 920px) {
+			flex:none;
+			margin-left:0em;
+			width: 100%;
+		}
 	}
 
 	.info__descripcion {

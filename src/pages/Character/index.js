@@ -14,6 +14,7 @@ const Characters = () => {
 		{ text: 'Stories', value: 'stories' },
 	];
 
+	const [width, setWidth] = useState(0);
 	const [characterState, fetchData] = useDataApi(makeUrl('characters'), undefined, true);
 
 	const [filterSelected, setFilterSelected] = useState(selectOptions[0].value);
@@ -43,6 +44,7 @@ const Characters = () => {
 		{
 			title: 'Description',
 			dataIndex: 'description',
+			className: width < 476 && 'hidden',
 			render: renderDescription,
 		},
 	];
@@ -67,6 +69,20 @@ const Characters = () => {
 			},
 		});
 	};
+
+	const resizeHandler = () => {
+		const currentWidth = document.body.clientWidth;
+		setWidth(currentWidth);
+	};
+
+	useEffect(() => {
+		resizeHandler();
+		window.addEventListener('resize', resizeHandler);
+
+		return () => {
+			window.removeEventListener('resize', resizeHandler);
+		};
+	}, []);
 
 
 	useEffect(() => {

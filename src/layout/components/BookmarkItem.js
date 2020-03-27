@@ -36,8 +36,16 @@ background: var(--bg-color);
 border-radius: 15px;
 padding:1em;
 margin: 2em 0.5em 1em 0.5em;
-
 width: calc(25% - 1em);
+
+@media (max-width: 970px) {
+	width: calc(50% - 1em);
+}
+
+@media (max-width: 600px) {
+	width: 100%;
+}
+
 
 	--picture-size: 55px;
 	.bookmark-item__picture {

@@ -45,4 +45,18 @@ code {
 	opacity:1 !important;
 }
 
+@media (max-width: 1000px) {
+	body {
+		--nav-width:6rem;
+	}
+}
 
+@media (max-width: 715px) {
+	body {
+		--nav-width:0rem;
+	}
+}
+
+.hidden{
+	display:none !important;
+}
