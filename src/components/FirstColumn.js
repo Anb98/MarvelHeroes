@@ -26,7 +26,7 @@ const Wrapper = styled(Link)`
 	cursor:pointer;
 	align-items:center;
 
-	--picture-size: 35px;
+	--picture-size: 40px;
 	.first-column__picture {
 		width:var(--picture-size);
 		height:var(--picture-size);

@@ -57,7 +57,7 @@ const reducer = (state, action) => {
  * @param {boolean?} hasCache - Cache los resultados en context
  * @returns {[state, fetchData]}
  */
-const useDataApi = (url, headers = null, hasCache = false) => {
+const useDataApi = (originalUrl, headers = null, hasCache = false) => {
 	const { state: stateCache, setResult } = useContext(CacheContext);
 
 	const [state, dispatch] = useReducer(reducer, {
@@ -88,13 +88,20 @@ const useDataApi = (url, headers = null, hasCache = false) => {
 	 * fetchData
 	 * @param {any} [body] - Cuerpo de la peticion
 	 * @param {string} [method="get"] - tipo de metodo
+	 * @param {string} [params] - parametros get de la peticion
+	 * @param {string} [url] - url de la peticion
 	 */
-	const fetchData = async ({ body = null, method = 'get', params = undefined } = {}) => {
+	const fetchData = async ({
+		body = null,
+		method = 'get',
+		params = undefined,
+		url = null,
+	} = {}) => {
 		if (state.isLoading) return;
 
 		const request = {
 			method,
-			url,
+			url: url || originalUrl,
 			headers,
 			data: body,
 			params,

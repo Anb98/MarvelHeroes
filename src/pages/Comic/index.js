@@ -5,7 +5,7 @@ import { message } from 'antd';
 import FirstColumn from '@components/FirstColumn';
 import StyledTable from '@components/StyledTable';
 import useDataApi from '@hooks/useDataApi';
-import { makeUrl } from '@config/util';
+import { makeUrl, renderDescription } from '@config/util';
 
 
 const Comics = () => {
@@ -47,13 +47,7 @@ const Comics = () => {
 		{
 			title: 'Description',
 			dataIndex: 'description',
-			render: (text) => {
-				if (!text) return 'No description 😢';
-
-				if (text.length > 130) return `${text.substring(0, 130)}...`;
-
-				return text;
-			},
+			render: renderDescription,
 		},
 		{
 			title: 'Issue Number',

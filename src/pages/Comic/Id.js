@@ -6,7 +6,7 @@ import { List, message, Pagination } from 'antd';
 
 import styled from 'styled-components';
 
-import { makeUrl } from '@config/util';
+import { makeUrl, favoriteHandle, getFavorite } from '@config/util';
 import useDataApi from '@hooks/useDataApi';
 
 import FirstColumn from '@components/FirstColumn';
@@ -17,6 +17,7 @@ const Id = () => {
 	const history = useHistory();
 	const { id } = useParams();
 
+	const [isFavorite, setIsFavorite] = useState(false);
 	const [avatar, setAvatar] = useState('');
 	const [characterPage, setCharacterPage] = useState(1);
 	const [storiesPage, setStoriesPage] = useState(1);
@@ -71,6 +72,8 @@ const Id = () => {
 
 				fetchCharacters({ params: { limit: 5, offset: 0 } });
 				fetchStories({ params: { limit: 5, offset: 0 } });
+
+				getFavorite('comics', setIsFavorite, id);
 			}
 		}
 
@@ -91,7 +94,12 @@ const Id = () => {
 
 	return (
 		<Wrapper>
-			<StyledPanel title='Comic' favoritable>
+			<StyledPanel
+				title='Comic'
+				favoritable
+				isFavorite={isFavorite}
+				onFavorite={favoriteHandle('comics', setIsFavorite, isFavorite, id)}
+			>
 				<InfoPanel
 					avatar={avatar}
 					title={comic.title}

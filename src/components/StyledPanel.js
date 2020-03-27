@@ -61,7 +61,7 @@ const Wrapper = styled.div`
 	}
 
 	.panel__text-title {
-		color: #afbed3;
+		color: var(--text-color);
 	}
 
 	button {
@@ -72,6 +72,7 @@ const Wrapper = styled.div`
 
 	.panel__edit{
 		height:2.1em;
+		filter: invert(89%) sepia(4%) saturate(2044%) hue-rotate(184deg) brightness(87%) contrast(89%);
 	}
 `;
 

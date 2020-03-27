@@ -6,7 +6,7 @@ import { message } from 'antd';
 
 import StyledTable from '@components/StyledTable';
 import useDataApi from '@hooks/useDataApi';
-import { makeUrl } from '@config/util';
+import { makeUrl, renderDescription } from '@config/util';
 
 const Stories = () => {
 	const [storiesState, fetchData] = useDataApi(makeUrl('stories'), undefined, true);
@@ -28,13 +28,7 @@ const Stories = () => {
 		{
 			title: 'Original issue',
 			dataIndex: 'originalIssue',
-			render: (text) => {
-				if (!text?.name) return 'No original issue 😢';
-
-				if (text?.name?.length > 130) return `${text?.name?.substring(0, 130)}...`;
-
-				return text?.name;
-			},
+			render: (obj) => renderDescription(obj.name),
 		},
 	];
 

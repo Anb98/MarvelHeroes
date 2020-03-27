@@ -25,8 +25,8 @@ const CharacterId = lazy(() => import('@pages/Character/Id'));
 
 const App = () => (
 	<Router>
-		<Layout>
-			<CacheProvider>
+		<CacheProvider>
+			<Layout>
 				<Suspense fallback={<Loading />}>
 					<Switch>
 						<Redirect exact from='/' to='characters' />
@@ -38,8 +38,8 @@ const App = () => (
 						<Route path='/stories/:id' component={StoriesId} />
 					</Switch>
 				</Suspense>
-			</CacheProvider>
-		</Layout>
+			</Layout>
+		</CacheProvider>
 	</Router>
 );
 
