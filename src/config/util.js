@@ -18,6 +18,8 @@ export const renderDescription = (text) => {
 	return text;
 };
 
+export const getImgPath = (url) => url.replace('http', 'https');
+
 export const favoriteHandle = (type, setIsFavorite, isFavorite, id) => () => {
 	const stringIds = localStorage.getItem(type);
 

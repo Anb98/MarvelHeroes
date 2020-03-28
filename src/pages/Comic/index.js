@@ -5,7 +5,7 @@ import { message } from 'antd';
 import FirstColumn from '@components/FirstColumn';
 import StyledTable from '@components/StyledTable';
 import useDataApi from '@hooks/useDataApi';
-import { makeUrl, renderDescription } from '@config/util';
+import { makeUrl, renderDescription, getImgPath } from '@config/util';
 
 
 const Comics = () => {
@@ -40,7 +40,7 @@ const Comics = () => {
 			render: (text, record) => (
 				<FirstColumn
 					href={`/comics/${record.id}`}
-					avatar={`${record.thumbnail?.path}/standard_small.${record.thumbnail?.extension}`}
+					avatar={getImgPath(`${record.thumbnail?.path}/standard_small.${record.thumbnail?.extension}`)}
 					title={text}
 				/>
 			),

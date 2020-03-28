@@ -47,6 +47,11 @@ position:relative;
 .main-container{
 	margin-left: var(--nav-width);
 	padding: 1em 2.5em;
+
+	
+	@media (max-width: 715px) {
+		padding-bottom:5em;
+	}
 }
 `;
 

@@ -5,7 +5,7 @@ import { message } from 'antd';
 import FirstColumn from '@components/FirstColumn';
 import StyledTable from '@components/StyledTable';
 import useDataApi from '@hooks/useDataApi';
-import { makeUrl, renderDescription } from '@config/util';
+import { makeUrl, renderDescription, getImgPath } from '@config/util';
 
 const Characters = () => {
 	const selectOptions = [
@@ -36,7 +36,7 @@ const Characters = () => {
 			render: (text, record) => (
 				<FirstColumn
 					href={`/characters/${record.id}`}
-					avatar={`${record.thumbnail?.path}/standard_small.${record.thumbnail?.extension}`}
+					avatar={getImgPath(`${record.thumbnail?.path}/standard_small.${record.thumbnail?.extension}`)}
 					title={text}
 				/>
 			),

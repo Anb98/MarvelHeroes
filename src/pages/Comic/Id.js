@@ -6,7 +6,9 @@ import { List, message, Pagination } from 'antd';
 
 import styled from 'styled-components';
 
-import { makeUrl, favoriteHandle, getFavorite } from '@config/util';
+import {
+	makeUrl, favoriteHandle, getFavorite, getImgPath,
+} from '@config/util';
 import useDataApi from '@hooks/useDataApi';
 
 import FirstColumn from '@components/FirstColumn';
@@ -68,7 +70,7 @@ const Id = () => {
 			if (response.data.results.length) {
 				const mainData = response.data.results[0];
 				setComic(mainData);
-				setAvatar(`${mainData.thumbnail?.path}/standard_medium.${mainData.thumbnail?.extension}`);
+				setAvatar(getImgPath(`${mainData.thumbnail?.path}/standard_medium.${mainData.thumbnail?.extension}`));
 
 				fetchCharacters({ params: { limit: 5, offset: 0 } });
 				fetchStories({ params: { limit: 5, offset: 0 } });
@@ -117,7 +119,7 @@ const Id = () => {
 							<FirstColumn
 								href={`/characters/${item.id}`}
 								title={item.name}
-								avatar={`${item.thumbnail?.path}/standard_small.${item.thumbnail?.extension}`}
+								avatar={getImgPath(`${item.thumbnail?.path}/standard_small.${item.thumbnail?.extension}`)}
 							/>
 						</List.Item>
 					)}

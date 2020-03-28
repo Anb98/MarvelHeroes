@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Empty } from 'antd';
 
-import { makeUrl, renderDescription } from '@config/util';
+import { makeUrl, renderDescription, getImgPath } from '@config/util';
 import useDataApi from '@hooks/useDataApi';
 
 import BookmarkItem from './BookmarkItem';
@@ -29,7 +29,7 @@ const Bookmarks = ({ type }) => {
 		if (['characters', 'comics'].includes(type)) {
 			switch (property) {
 			case 'picture':
-				return `${data.thumbnail?.path}/standard_medium.${data.thumbnail?.extension}`;
+				return getImgPath(`${data.thumbnail?.path}/standard_medium.${data.thumbnail?.extension}`);
 			case 'title':
 				return type === 'characters' ? data.name : data.title;
 			case 'description':
